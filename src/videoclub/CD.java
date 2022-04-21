@@ -16,12 +16,7 @@ public enum CD {
 		this.diasAlquilados = diasAlquilados;
 	
 	}
-	private CD(int codBarras, String Titulo) {
-		
-		this.codBarras = codBarras;
-		this.titulo = Titulo;
-		
-	}
+
 
 }
 
