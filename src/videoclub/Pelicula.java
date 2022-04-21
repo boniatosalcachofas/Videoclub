@@ -1,19 +1,31 @@
 package videoclub;
 
-public enum Pelicula{
+public enum Pelicula implements CodBarras{
 	
 	NOVEDADES(3,1), SEMI_NOVEDADES(2,2), ANTIGUAS(1,4);
 
-	protected int codBarras;
-	protected String titulo;
-	protected int precio;
-	protected int diasAlquilados;
+	private static int codGenerico = 10000;
+	private int codBarras;
+	private String titulo;
+	private int precio;
+	private int diasAlquilados;
+	
+	public int generadorCodBarras() {
+		
+		codGenerico++;
+		
+		return (codGenerico-1);
+		
+		
+	}
 
 	private Pelicula(int precio, int diasAlquilados) {
 	
 		this.precio = precio;
 		this.diasAlquilados = diasAlquilados;
-	
+		this.codBarras = generadorCodBarras();
+		
+		
 	}
 	public int getCodBarras() {
 		return codBarras;
