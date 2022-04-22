@@ -18,6 +18,8 @@ public enum CD implements CodBarras {
 		return (codGenerico - 1);
 
 	}
+	
+	
 
 	private CD(int precio, int diasAlquilados) {
 
