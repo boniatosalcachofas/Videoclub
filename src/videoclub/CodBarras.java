@@ -3,6 +3,6 @@ package videoclub;
 public interface CodBarras {
 	
 	
-	public int generadorCodBarras();
+	public void generadorCodBarras();
 
 }

@@ -2,7 +2,7 @@ package videoclub;
 
 import java.util.Scanner;
 
-public enum Pelicula implements CodBarras {
+public enum Pelicula implements CodBarras, Cloneable{
 
 	NOVEDADES(3, 1), SEMI_NOVEDADES(2, 2), ANTIGUAS(1, 4);
 
@@ -12,32 +12,46 @@ public enum Pelicula implements CodBarras {
 	private int precio;
 	private int diasAlquilados;
 
-	public int generadorCodBarras() {
+	public void generadorCodBarras() {
 
+		codBarras = codGenerico;
 		codGenerico++;
 
-		return (codGenerico - 1);
-
 	}
-	
+
 	public int introducirPelicula() {
 		Scanner scLine = new Scanner(System.in);
 		Scanner scInt = new Scanner(System.in);
-		
+
 		System.out.println("Titulo de la pelicula");
 		this.titulo = scLine.nextLine();
 		System.out.println("Cantidad de unidades");
 		int cantidad = scInt.nextInt();
-		
+
+		codBarras = codGenerico;
+		codGenerico++;
+
 		return cantidad;
 	}
 	
+	public Object clonarPelicula() throws CloneNotSupportedException 
+	   {
+	      return (CD)super.clone();
+	   }
 	
+
+	public void mostrarDatos() {
+
+		System.out.println(this.codBarras + " " + this.titulo + ", " + this.precio + " euros, " + this.diasAlquilados
+				+ " dias restantes");
+
+	}
+
+
 	private Pelicula(int precio, int diasAlquilados) {
 
 		this.precio = precio;
 		this.diasAlquilados = diasAlquilados;
-		this.codBarras = generadorCodBarras();
 
 	}
 
