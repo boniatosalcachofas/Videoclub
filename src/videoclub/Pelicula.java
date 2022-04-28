@@ -2,81 +2,111 @@ package videoclub;
 
 import java.util.Scanner;
 
-public enum Pelicula implements CodBarras, Cloneable{
+public class Pelicula extends Multimedia implements CodBarras{
 
-	NOVEDADES(3, 1), SEMI_NOVEDADES(2, 2), ANTIGUAS(1, 4);
 
 	private static int codGenerico = 10000;
-	private int codBarras;
-	private String titulo;
-	private int precio;
 	private int diasAlquilados;
-
-	public void generadorCodBarras() {
-
-		codBarras = codGenerico;
-		codGenerico++;
-
-	}
-
+	private String antiguedad;
+	
 	public int introducirPelicula() {
 		Scanner scLine = new Scanner(System.in);
 		Scanner scInt = new Scanner(System.in);
-
+		
 		System.out.println("Titulo de la pelicula");
-		this.titulo = scLine.nextLine();
+		this.setTitulo(scLine.nextLine());
+		elegirAntiguedad();
 		System.out.println("Cantidad de unidades");
 		int cantidad = scInt.nextInt();
-
-		codBarras = codGenerico;
+		
+		this.setCodBarras(codGenerico);
 		codGenerico++;
-
+		
 		return cantidad;
 	}
+
+	public void elegirAntiguedad() {
+		//posible error
+				Scanner scInt = new Scanner(System.in);
+				
+				System.out.println("Antiguedad de la pelicula:\n"
+						+ "1.- Novedad\n"
+						+ "2.- Semi-novedad\n"
+						+ "3.- Antigua");
+				
+				
+				int eleccion = scInt.nextInt();
+				
+				switch (eleccion) {
+				
+				case 1:
+					this.antiguedad = "Novedad";
+					this.setPrecio(3);
+					this.diasAlquilados = 1;
+					break;
+				case 2:
+					this.antiguedad = "Semi-novedad";
+					this.setPrecio(2);
+					this.diasAlquilados = 2;
+					break;
+				case 3:
+					this.antiguedad = "Antigua";
+					this.setPrecio(1);
+					this.diasAlquilados = 4;
+					break;
+				
+				}
+				
+				
+		
+	}
 	
-	public Object clonarPelicula() throws CloneNotSupportedException 
-	   {
-	      return (CD)super.clone();
-	   }
+	
+	public void generadorCodBarras() {
+
+		this.setCodBarras(codGenerico);
+		codGenerico++;
+
+	}
+
+
 	
 
-	public void mostrarDatos() {
+	
 
-		System.out.println(this.codBarras + " " + this.titulo + ", " + this.precio + " euros, " + this.diasAlquilados
+	public void mostrarDatos(int i) {
+
+		System.out.println(i + ".- " + this.antiguedad + ": " + this.getCodBarras() + " " + this.getTitulo() + ", " + this.getPrecio() + " euros, " + this.diasAlquilados
 				+ " dias restantes");
 
 	}
 
+	//constructor
+	
+	public Pelicula(Pelicula peliCopia) {
+		this(peliCopia.getTitulo(), peliCopia.getPrecio(), peliCopia.diasAlquilados, peliCopia.antiguedad);
+		
+	}
+	
+	
+	public Pelicula() {
+		super();
+	}
 
-	private Pelicula(int precio, int diasAlquilados) {
-
-		this.precio = precio;
+	public Pelicula(String titulo, double precio, int diasAlquilados, String antiguedad) {
+		super(titulo, precio);
 		this.diasAlquilados = diasAlquilados;
-
+		this.antiguedad = antiguedad;
 	}
 
-	public int getCodBarras() {
-		return codBarras;
+	//Getters and setters
+	public static int getCodGenerico() {
+		return codGenerico;
 	}
 
-	public void setCodBarras(int codBarras) {
-		this.codBarras = codBarras;
-	}
 
-	public String getTitulo() {
-		return titulo;
-	}
-
-	public void setTitulo(String titulo) {
-		this.titulo = titulo;
-	}
-
-	public int getPrecio() {
-		return precio;
-	}
-
-	public void setPrecio(int precio) {
-		this.precio = precio;
+	public static void setCodGenerico(int codGenerico) {
+		Pelicula.codGenerico = codGenerico;
 	}
 
 	public int getDiasAlquilados() {
@@ -86,5 +116,7 @@ public enum Pelicula implements CodBarras, Cloneable{
 	public void setDiasAlquilados(int diasAlquilados) {
 		this.diasAlquilados = diasAlquilados;
 	}
+
+
 
 }

@@ -3,20 +3,20 @@ package videoclub;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Principal implements Cloneable{
+public class Principal{
 	int a = 0;
 	static ArrayList<Pelicula> arrayPeliculas = new ArrayList();
-	static ArrayList<CD> arrayCds = new ArrayList();
+	static ArrayList<Cd> arrayCds = new ArrayList();
 	static int dia = 1;
 	static int selectorColeccion = 0;
 
-	public static void main(String[] args) throws CloneNotSupportedException{
+	public static void main(String[] args) {
 		while (true) {
 			menuPrincipal();
 		}
 	}
 
-	public static void menuPrincipal() throws CloneNotSupportedException {
+	public static void menuPrincipal() {
 		// posible error
 		Scanner scInt = new Scanner(System.in);
 
@@ -33,19 +33,20 @@ public class Principal implements Cloneable{
 			nuevoProducto();
 			break;
 		case 2:
-			mostrarInformacion();
+			mostrarInformacion(true, true);
+			break;
 		case 3:
-			System.out.println("haha");
+			mostrarInformacion(true, false);
 			break;
 		case 4:
-			System.out.println("hehe");
+			mostrarInformacion(false, true);
 			break;
 
 		}
 
 	}
 
-	public static void nuevoProducto() throws CloneNotSupportedException {
+	public static void nuevoProducto() {
 		// posible error
 		Scanner scInt = new Scanner(System.in);
 		int eleccion = 0;
@@ -69,154 +70,107 @@ public class Principal implements Cloneable{
 
 	}
 
-	public static void crearPeliculas() throws CloneNotSupportedException {
+	public static void crearPeliculas() {
 
-		crearObjetoMultimedia(true);
-		int posicionPeli = arrayPeliculas.size() - 1;
-
-		int cantidadPeliculas = arrayPeliculas.get(posicionPeli).introducirPelicula();
-		int peliculasIntroducidas = 1;
-
-		while (peliculasIntroducidas < cantidadPeliculas) {
-
-			Pelicula objetoTemporal;
-			objetoTemporal = (Pelicula)arrayPeliculas.get(posicionPeli).clonarPelicula();
-			objetoTemporal.generadorCodBarras();
-			arrayPeliculas.add(objetoTemporal);
-			peliculasIntroducidas++;
-
-		}
+		Pelicula objetoTemporal = new Pelicula();
+		int cantidadCopias = objetoTemporal.introducirPelicula();
+		arrayPeliculas.add(objetoTemporal);
+		int numPeliculas = 1;
 		
-
+		if (cantidadCopias > 1) {
+			crearCopia(cantidadCopias, numPeliculas, true);
+		}
 	}
 	
-	public static void crearCds()  {
+	public static void crearCds() {
 		
-		crearObjetoMultimedia(false);
-		int posicionCd = arrayCds.size() - 1;
-
-		int cantidadCds = arrayCds.get(posicionCd).introducirCd();
-		int CdsIntroducidas = 1;
-
-		while (CdsIntroducidas < cantidadCds) {
-
-			CD objetoTemporal;
-			objetoTemporal = (CD)arrayCds.get(posicionCd).clonarCd();
-			objetoTemporal.generadorCodBarras();
-			arrayCds.add(objetoTemporal);
-			CdsIntroducidas++;
-
+		Cd objetoTemporal = new Cd();
+		int cantidadCopias = objetoTemporal.introducirCd();
+		arrayCds.add(objetoTemporal);
+		int numCds = 1;
+	
+		if (cantidadCopias > 1) {
+			crearCopia(cantidadCopias, numCds, false);
 		}
 		
-		
 	}
-
-	private static void crearObjetoMultimedia(boolean peliCd) {
-
+	
+	//True informa al metodo de que ha recibido una pelicula y false un cd
+	private static void crearCopia(int cantidadCopias, int numProductos, boolean peliCd) {
+		
+		
 		if (peliCd) {
-			Pelicula objetoTemporal = Pelicula.NOVEDADES;
-			objetoTemporal = antiguedadPelicula(objetoTemporal);
-			arrayPeliculas.add(objetoTemporal);
-		} else if (!peliCd) {
-
-			CD objetoTemporal = CD.NOVEDADES;
-			objetoTemporal = antiguedadCd(objetoTemporal);
-			arrayCds.add(objetoTemporal);
-		}
-	}
-
-	private static Pelicula antiguedadPelicula(Pelicula objetoTemporal) {
-		Scanner scInt = new Scanner(System.in);
-
-		while (true) {
-
-			// posible error
-
-			System.out.println("Antiguedad de la pelicula:" + "\n1.- Novedad" + "\n2.- Semi-novedad" + "\n3.- Antigua");
-
-			int eleccion = scInt.nextInt();
-
-			if (eleccion == 1) {
-				objetoTemporal = Pelicula.NOVEDADES;
-				break;
-			} else if (eleccion == 2) {
-				objetoTemporal = Pelicula.SEMI_NOVEDADES;
-				break;
-			} else if (eleccion == 3) {
-				objetoTemporal = Pelicula.ANTIGUAS;
-				break;
+			int posicionPeli = arrayPeliculas.size()-1;
+			
+			while (numProductos < cantidadCopias) {
+				Pelicula objetoTemporal = new Pelicula(arrayPeliculas.get(posicionPeli));
+				objetoTemporal.generadorCodBarras();
+				arrayPeliculas.add(objetoTemporal);
+				numProductos++;
+			} 
+		}else if(!peliCd) {
+			while (numProductos < cantidadCopias) {
+				int posicionCd = arrayCds.size() - 1;
+				Cd objetoTemporal = new Cd(arrayCds.get(posicionCd));
+				objetoTemporal.generadorCodBarras();
+				arrayCds.add(objetoTemporal);
+				numProductos++;
 			}
-
-			else
-				System.out.println("Por favor, elija un valor valido");
+			
 		}
-		return objetoTemporal;
 	}
 	
-	public static CD antiguedadCd(CD objetoTemporal) {
-		
-		Scanner scInt = new Scanner(System.in);
-
-		while (true) {
-
-			// posible error
-
-			System.out.println("Antiguedad del CD:" + "\n1.- Novedad" + "\n2.- Semi-novedad" + "\n3.- Antigua");
-
-			int eleccion = scInt.nextInt();
-
-			if (eleccion == 1) {
-				objetoTemporal = CD.NOVEDADES;
-				break;
-			} else if (eleccion == 2) {
-				objetoTemporal = CD.SEMI_NOVEDADES;
-				break;
-			} else if (eleccion == 3) {
-				objetoTemporal = CD.ANTIGUAS;
-				break;
-			}
-
-			else
-				System.out.println("Por favor, elija un valor valido");
-		}
-		return objetoTemporal;
-		
-	}
 	
-	public static void mostrarInformacion() {
+	
+
+
+	
+	//Dos boolean para reconocer si mostrar peliculas o cds
+	public static void mostrarInformacion(boolean mostrarPelicula, boolean mostrarCd) {
 		//posible error
 		Scanner scInt = new Scanner(System.in);
 		
 		boolean stock = false;
 		
-		if (arrayPeliculas.size() > 0) {
-			for (int i = 0; i < arrayPeliculas.size(); i++) {
+		if (mostrarPelicula) {
+			if (arrayPeliculas.size() > 0) {
+				for (int i = 0; i < arrayPeliculas.size(); i++) {
 
-				stock = true;
-				System.out.print((i + 1) + ".- " + arrayPeliculas.get(i).name().toLowerCase() + ": ");
-				arrayPeliculas.get(i).mostrarDatos();
+					stock = true;
+					arrayPeliculas.get(i).mostrarDatos((i + 1));
 
+				}
 			} 
 		}
-		if (arrayCds.size() > 0) {
-			for (int i = 0; i < arrayCds.size(); i++) {
+		if (mostrarCd) {
+			if (arrayCds.size() > 0) {
+				for (int i = 0; i < arrayCds.size(); i++) {
 
-				stock = true;
-				System.out.print((i + (arrayPeliculas.size() - 1)) + ".- " + arrayCds.get(i).name().toLowerCase() + ": ");
-				arrayCds.get(i).mostrarDatos();
+					if (mostrarPelicula) {
+						arrayCds.get(i).mostrarDatos((arrayPeliculas.size() + i + 1));
+					}else if (!mostrarPelicula) arrayCds.get(i).mostrarDatos((i + 1));
 
+					stock = true;
+					
+				}
 			} 
 		}
 		if (!stock) System.out.println("No hay stock de peliculas o cds");
-		int eleccion = scInt.nextInt();
+		else if (stock && mostrarPelicula && mostrarCd) {
+			int eleccion = scInt.nextInt();
+			eliminarProducto(eleccion - 1);
+		}
 	}
 	
 	 
 
 	
-	public static void eliminarProducto() {
-		
-		
+	public static void eliminarProducto(int posiProducto) {
+		ArrayList <Multimedia> arrayCompacto = new ArrayList();
+		arrayCompacto.addAll(arrayPeliculas);
+		arrayCompacto.addAll(arrayCds);
+		if(arrayCompacto.get(posiProducto) instanceof Pelicula) arrayPeliculas.remove(posiProducto);
+		else if(arrayCompacto.get(posiProducto) instanceof Cd) arrayCds.remove(posiProducto-arrayPeliculas.size());
 		
 	}
 
