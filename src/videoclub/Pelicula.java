@@ -8,6 +8,7 @@ public class Pelicula extends Multimedia implements CodBarras{
 	private static int codGenerico = 10000;
 	private int diasAlquilados;
 	private String antiguedad;
+	boolean alquilada = false;
 	
 	public int introducirPelicula() {
 		Scanner scLine = new Scanner(System.in);
@@ -21,6 +22,8 @@ public class Pelicula extends Multimedia implements CodBarras{
 		
 		this.setCodBarras(codGenerico);
 		codGenerico++;
+		
+		alquilada = true;
 		
 		return cantidad;
 	}
@@ -80,6 +83,12 @@ public class Pelicula extends Multimedia implements CodBarras{
 				+ " dias restantes");
 
 	}
+	
+	public void alquilarPelicula() {
+		
+		this.alquilada = true;
+		
+	}
 
 	//constructor
 	
@@ -100,6 +109,23 @@ public class Pelicula extends Multimedia implements CodBarras{
 	}
 
 	//Getters and setters
+	
+	public boolean isAlquilada() {
+		return alquilada;
+	}
+	
+	public void setAlquilada(boolean alquilada) {
+		this.alquilada = alquilada;
+	}
+	
+	public String getAntiguedad() {
+		return antiguedad;
+	}
+
+	public void setAntiguedad(String antiguedad) {
+		this.antiguedad = antiguedad;
+	}
+
 	public static int getCodGenerico() {
 		return codGenerico;
 	}

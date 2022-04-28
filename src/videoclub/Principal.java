@@ -41,6 +41,9 @@ public class Principal{
 		case 4:
 			mostrarInformacion(false, true);
 			break;
+		case 5:
+			alquilarPelicula();
+			break;
 
 		}
 
@@ -134,7 +137,7 @@ public class Principal{
 		
 		if (mostrarPelicula) {
 			if (arrayPeliculas.size() > 0) {
-				for (int i = 0; i < arrayPeliculas.size(); i++) {
+				for (int i = 0; i < arrayPeliculas.size() && !arrayPeliculas.get(i).isAlquilada(); i++) {
 
 					stock = true;
 					arrayPeliculas.get(i).mostrarDatos((i + 1));
@@ -171,6 +174,19 @@ public class Principal{
 		arrayCompacto.addAll(arrayCds);
 		if(arrayCompacto.get(posiProducto) instanceof Pelicula) arrayPeliculas.remove(posiProducto);
 		else if(arrayCompacto.get(posiProducto) instanceof Cd) arrayCds.remove(posiProducto-arrayPeliculas.size());
+		
+	}
+	
+	public static void alquilarPelicula() {
+		//posible error
+		Scanner scInt = new Scanner(System.in);
+		
+		mostrarInformacion(true, false);
+		
+		int eleccion = scInt.nextInt()-1;
+		
+		arrayPeliculas.get(eleccion).alquilarPelicula();
+		
 		
 	}
 
