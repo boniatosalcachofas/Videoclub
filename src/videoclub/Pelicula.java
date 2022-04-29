@@ -23,8 +23,6 @@ public class Pelicula extends Multimedia implements CodBarras{
 		this.setCodBarras(codGenerico);
 		codGenerico++;
 		
-		alquilada = true;
-		
 		return cantidad;
 	}
 
@@ -84,10 +82,10 @@ public class Pelicula extends Multimedia implements CodBarras{
 
 	}
 	
-	public void alquilarPelicula() {
+	public double alquilarPelicula() {
 		
 		this.alquilada = true;
-		
+		return this.getPrecio();
 	}
 
 	//constructor
@@ -110,14 +108,14 @@ public class Pelicula extends Multimedia implements CodBarras{
 
 	//Getters and setters
 	
+	
 	public boolean isAlquilada() {
 		return alquilada;
 	}
-	
+
 	public void setAlquilada(boolean alquilada) {
 		this.alquilada = alquilada;
 	}
-	
 	public String getAntiguedad() {
 		return antiguedad;
 	}

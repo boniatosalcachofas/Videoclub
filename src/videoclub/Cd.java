@@ -39,7 +39,11 @@ public class Cd extends Multimedia implements CodBarras{
 	}
 	
 	
-	
+	public double revenueSale() {
+		
+		return this.getPrecio();
+		
+	}
 	
 	
 	public Cd() {

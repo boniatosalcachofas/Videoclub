@@ -8,7 +8,7 @@ public class Principal{
 	static ArrayList<Pelicula> arrayPeliculas = new ArrayList();
 	static ArrayList<Cd> arrayCds = new ArrayList();
 	static int dia = 1;
-	static int selectorColeccion = 0;
+	static double ganancias = 0;
 
 	public static void main(String[] args) {
 		while (true) {
@@ -21,9 +21,9 @@ public class Principal{
 		Scanner scInt = new Scanner(System.in);
 
 		System.out.println("MENU: DIA " + dia + "\n" + "1.- Introducir nuevo producto.\n" + "2.- Eliminar producto\n"
-				+ "3.- Ver listado de películas\n" + "4.- Ver listado de CDs\n" + "5.- Alquilar película\n"
-				+ "6.- Vender disco\n" + "7.- Ver películas en alquiler\n" + "8.- Ver ganancias\n"
-				+ "9.- Pasar al día siguiente");
+				+ "3.- Ver listado de peliculas\n" + "4.- Ver listado de CDs\n" + "5.- Alquilar pelicula\n"
+				+ "6.- Vender disco\n" + "7.- Ver peliculas en alquiler\n" + "8.- Ver ganancias\n"
+				+ "9.- Pasar al dia siguiente");
 
 		int eleccion = scInt.nextInt();
 
@@ -33,7 +33,7 @@ public class Principal{
 			nuevoProducto();
 			break;
 		case 2:
-			mostrarInformacion(true, true);
+			eliminarProducto();
 			break;
 		case 3:
 			mostrarInformacion(true, false);
@@ -42,7 +42,10 @@ public class Principal{
 			mostrarInformacion(false, true);
 			break;
 		case 5:
-			alquilarPelicula();
+			alquilarPeli();
+			break;
+		case 6:
+			venderCd();
 			break;
 
 		}
@@ -128,66 +131,115 @@ public class Principal{
 
 
 	
-	//Dos boolean para reconocer si mostrar peliculas o cds
-	public static void mostrarInformacion(boolean mostrarPelicula, boolean mostrarCd) {
-		//posible error
-		Scanner scInt = new Scanner(System.in);
-		
-		boolean stock = false;
-		
-		if (mostrarPelicula) {
-			if (arrayPeliculas.size() > 0) {
-				for (int i = 0; i < arrayPeliculas.size() && !arrayPeliculas.get(i).isAlquilada(); i++) {
-
-					stock = true;
-					arrayPeliculas.get(i).mostrarDatos((i + 1));
-
-				}
-			} 
-		}
-		if (mostrarCd) {
-			if (arrayCds.size() > 0) {
-				for (int i = 0; i < arrayCds.size(); i++) {
-
-					if (mostrarPelicula) {
-						arrayCds.get(i).mostrarDatos((arrayPeliculas.size() + i + 1));
-					}else if (!mostrarPelicula) arrayCds.get(i).mostrarDatos((i + 1));
-
-					stock = true;
-					
-				}
-			} 
-		}
-		if (!stock) System.out.println("No hay stock de peliculas o cds");
-		else if (stock && mostrarPelicula && mostrarCd) {
-			int eleccion = scInt.nextInt();
-			eliminarProducto(eleccion - 1);
-		}
-	}
+	
+	
 	
 	 
 
 	
-	public static void eliminarProducto(int posiProducto) {
-		ArrayList <Multimedia> arrayCompacto = new ArrayList();
-		arrayCompacto.addAll(arrayPeliculas);
-		arrayCompacto.addAll(arrayCds);
-		if(arrayCompacto.get(posiProducto) instanceof Pelicula) arrayPeliculas.remove(posiProducto);
-		else if(arrayCompacto.get(posiProducto) instanceof Cd) arrayCds.remove(posiProducto-arrayPeliculas.size());
+	public static void eliminarProducto() {
+		Scanner scInt = new Scanner(System.in);
+
+		boolean stock = mostrarInformacion(true, true);
+		if (stock) {
+			int posiProducto = scInt.nextInt() - 1;
+			
+			ArrayList<Multimedia> arrayCompacto = new ArrayList();
+			arrayCompacto.addAll(arrayPeliculas);
+			arrayCompacto.addAll(arrayCds);
+			
+			if (arrayCompacto.get(posiProducto) instanceof Pelicula) {
+				arrayPeliculas.remove(posiProducto);
+			}
+			else if (arrayCompacto.get(posiProducto) instanceof Cd) {
+				arrayCds.remove(posiProducto - arrayPeliculas.size());
+			}
+		}
 		
 	}
 	
-	public static void alquilarPelicula() {
+	
+	
+	
+	public static void alquilarPeli() {
 		//posible error
 		Scanner scInt = new Scanner(System.in);
+		ArrayList <Pelicula> noAlquiladas = new ArrayList();
+		int numeratedCount = 1;
 		
-		mostrarInformacion(true, false);
+		if (arrayPeliculas.size() > 0) {
+			for (int i = 0; i < arrayPeliculas.size(); i++) {
+
+				if (!arrayPeliculas.get(i).isAlquilada()) {
+					arrayPeliculas.get(i).mostrarDatos((i + numeratedCount));
+					noAlquiladas.add(arrayPeliculas.get(i));
+				}else numeratedCount--;
+
+			}
+			int eleccion = scInt.nextInt()-1;
+			ganancias = ganancias + noAlquiladas.get(eleccion).alquilarPelicula();
+			
+		}else System.out.println("no hay stock de peliculas");
+		 
+	}
+	
+	public static void venderCd() {
+		//Posible error
+		Scanner scInt = new Scanner(System.in);
 		
-		int eleccion = scInt.nextInt()-1;
+		boolean stock = mostrarInformacion(false, true);
 		
-		arrayPeliculas.get(eleccion).alquilarPelicula();
+		if (stock) {
+			int eleccion = scInt.nextInt()-1;
+			
+			ganancias = ganancias + arrayCds.get(eleccion).revenueSale();
+			arrayCds.remove(eleccion);
+		}
 		
 		
 	}
+	
+	public static void mostrarAlquiladas() {
+		
+	}
+	
+	
+	//Dos boolean para reconocer si mostrar peliculas o cds
+		public static boolean mostrarInformacion(boolean mostrarPelicula, boolean mostrarCd) {
+			//posible error
+			Scanner scInt = new Scanner(System.in);
+			
+			boolean stockP = false;
+			boolean stockC = false;
+			
+			if (mostrarPelicula) {
+				if (arrayPeliculas.size() > 0) {
+					for (int i = 0; i < arrayPeliculas.size(); i++) {
+
+						stockP = true;
+						arrayPeliculas.get(i).mostrarDatos((i + 1));
+
+					}
+				} 
+			}
+			if (mostrarCd) {
+				if (arrayCds.size() > 0) {
+					for (int i = 0; i < arrayCds.size(); i++) {
+
+						if (mostrarPelicula) {
+							arrayCds.get(i).mostrarDatos((arrayPeliculas.size() + i + 1));
+						}else if (!mostrarPelicula) arrayCds.get(i).mostrarDatos((i + 1));
+
+						stockC = true;
+						
+					}
+				} 
+			}//posible inutilidad
+			if (!stockP && !mostrarCd) {System.out.println("No hay stock de peliculas"); return false;}
+			else if (!stockC && !mostrarPelicula) {System.out.println("No hay stock de cds"); return false;}
+			else if (!stockC && !stockP && mostrarPelicula && mostrarCd) {System.out.println("No hay stock de ningun tipo"); return false;}
+			else return true;
+				
+			}
 
 }
