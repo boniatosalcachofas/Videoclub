@@ -87,6 +87,26 @@ public class Pelicula extends Multimedia implements CodBarras{
 		this.alquilada = true;
 		return this.getPrecio();
 	}
+	
+	public void daysLeft() {
+		
+		if (alquilada) {
+			diasAlquilados--;
+			if (diasAlquilados == 0) {
+
+				returnFilm();
+
+			} 
+		}
+		
+	}
+	
+	public void returnFilm() {
+		
+		alquilada = false;
+		System.out.println("La pelicula " + this.getTitulo() + " con codigo " + this.getCodBarras() + " ha sido devuelta");
+		
+	}
 
 	//constructor
 	
