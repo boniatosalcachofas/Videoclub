@@ -18,7 +18,7 @@ public class Principal {
 	}
 
 	public static void menuPrincipal() {
-		// posible error
+
 		Scanner scInt = new Scanner(System.in);
 
 		System.out.println("MENU: DIA " + dia + "\n" + "1.- Introducir nuevo producto.\n" + "2.- Eliminar producto\n"
@@ -75,7 +75,7 @@ public class Principal {
 	}
 
 	public static void nuevoProducto() {
-		// posible error
+		
 		Scanner scInt = new Scanner(System.in);
 		int eleccion = 0;
 
@@ -167,7 +167,7 @@ public class Principal {
 	}
 
 	public static void alquilarPeli() {
-		// posible error
+	
 		Scanner scInt = new Scanner(System.in);
 		ArrayList<Pelicula> noAlquiladas = new ArrayList();
 		
@@ -187,7 +187,7 @@ public class Principal {
 
 
 	public static void venderCd() {
-		// Posible error
+
 		Scanner scInt = new Scanner(System.in);
 
 		boolean stock = mostrarInformacion(false, true);
@@ -264,7 +264,7 @@ public class Principal {
 
 	// Dos boolean para reconocer si mostrar peliculas o cds
 	public static boolean mostrarInformacion(boolean mostrarPelicula, boolean mostrarCd) {
-		// posible error
+	
 		Scanner scInt = new Scanner(System.in);
 
 		boolean stockP = false;

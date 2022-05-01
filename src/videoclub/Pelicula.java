@@ -27,7 +27,7 @@ public class Pelicula extends Multimedia implements CodBarras{
 	}
 
 	public void elegirAntiguedad() {
-		//posible error
+		
 				Scanner scInt = new Scanner(System.in);
 				
 				System.out.println("Antiguedad de la pelicula:\n"
